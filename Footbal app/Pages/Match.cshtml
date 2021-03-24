@@ -1,0 +1,69 @@
+﻿@page
+@model MatchModel
+@{
+    ViewData["Title"] = "Matches page";
+}
+
+
+@*Reference to JQuery*@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+
+<script>
+   
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            crossDomain: true,
+            url: "http://localhost:56661/api/v1/Match/Match",
+
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                $("#DIV").html('');
+                var DIV = '';
+                $.each(data.model, function (i, item) {
+                    var rows = "<tr>" +
+                        "<td id='matchID' style='display: none;'>" + item.matchID + "</td>" +
+                        "<td id='team1' style='display: none;'>" + item.team1 + "</td>" +
+                        "<td id='team2' style='display: none;'>" + item.team2 + "</td>" +
+                        "<td>" + item.teamName1 + "  Vs  " + item.teamName2 + "</td>" +
+                        "<td>" + item.teamScore1 + " - " + item.teamScore2 + "</td>" +
+
+                        "</tr>";
+                    $('#Table').append(rows);
+                }); //End of foreach Loop
+                console.log(data);
+            }, //End of AJAX Success function
+
+            failure: function (data) {
+                alert(data.responseText);
+            }, //End of AJAX failure function
+            error: function (data) {
+                alert(data.responseText);
+            } //End of AJAX error function
+
+        });
+        
+
+    });
+</script>
+
+
+<div class="panel panel-primary">
+   
+    <div class="panel-body">
+        <table class="table table-bordered" id="Table">
+            <tr>
+                <th style="display:none;">MatchID</th>
+                <th style="display:none;">TeamID1</th>
+                <th style="display:none;">TeamID2</th>
+                <th>Matches</th>
+                <th>Score</th>
+                @*<th>Results</th>*@
+            </tr>   <!--end of table-row -->
+        </table>   <!--end of table -->
+    </div> <!--end of Panel-body -->
+</div> <!--end of Panel -->
+

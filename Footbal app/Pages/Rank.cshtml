@@ -1,0 +1,62 @@
+﻿@page
+@model RankModel
+@{
+    ViewData["Title"] = "Rankings";
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            crossDomain: true,
+            url: "http://localhost:56661/api/v1/Match/Rank",
+
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                $("#DIV").html('');
+                var DIV = '';
+                $.each(data.model, function (i, item) {
+                    var rows = "<tr>" +
+                        "<td>" + parseInt(i+1) + "</td>" +
+                        "<td>" + item.teamName + "</td>" +                        
+                        "<td>" + item.win  + "</td>" +
+                        "<td>" + item.draw + "</td>" +
+                        "<td>" + item.loss + "</td>" +
+
+                        "</tr>";
+                    $('#Table').append(rows);
+                }); //End of foreach Loop
+                console.log(data);
+            }, //End of AJAX Success function
+
+            failure: function (data) {
+                alert(data.responseText);
+            }, //End of AJAX failure function
+            error: function (data) {
+                alert(data.responseText);
+            } //End of AJAX error function
+
+        });
+    });
+</script>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Ranking Details
+    </div>   <!--en dof panel-heading -->
+    <div class="panel-body">
+        <table class="table table-bordered" id="Table">
+            <tr> 
+            <th>Rank</th>
+                <th>Team</th>
+                <th>Win</th>
+                <th>Draw</th>
+                <th>Loss</th>
+            </tr>   <!--end of table-row -->
+        </table>   <!--end of table -->
+    </div> <!--end of Panel-body -->
+</div> <!--end of Panel -->

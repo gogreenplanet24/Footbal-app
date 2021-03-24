@@ -1,0 +1,63 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+@*Reference to JQuery*@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            crossDomain: true,
+            url: "http://localhost:56661/api/v1/Team/Team",
+            
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+               // alert(JSON.stringify(data));
+                $("#DIV").html('');
+                var DIV = '';
+                $.each(data.model, function (i, item) {
+                    var rows = "<tr>" +
+                        "<td id='teamID' style='display: none;'>" + item.teamID + "</td>" +
+                        "<td id='teamName'>" + item.teamName + "</td>" +
+                        "<td id='location'>" + item.location + "</td>" +
+                        "<td id='founder'>" + item.founder + "</td>" +
+                        "</tr>";
+                    $('#Table').append(rows);
+                }); //End of foreach Loop
+                console.log(data);
+            }, //End of AJAX Success function
+
+            failure: function (data) {
+                alert(data.responseText);
+            }, //End of AJAX failure function
+            error: function (data) {
+                alert(data.responseText);
+            } //End of AJAX error function
+
+        });
+    });
+</script>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Team Details
+    </div>   <!--en dof panel-heading -->
+    <div class="panel-body">
+        <table class="table table-bordered" id="Table">
+            <tr>
+                <th style="display:none;">TeamID</th>
+                <th>Teams</th>
+                <th>Location</th>
+                <th>Founder</th>
+            </tr>   <!--end of table-row -->
+        </table>   <!--end of table -->
+    </div> <!--end of Panel-body -->
+</div> <!--end of Panel -->
